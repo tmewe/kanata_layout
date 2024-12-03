@@ -1,0 +1,147 @@
+(defcfg
+  process-unmapped-keys yes
+  macos-dev-names-include (
+    "Apple Internal Keyboard / Trackpad"
+    "Magic Keyboard"
+  )
+)
+
+(defsrc
+         f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12
+         q    w    e    r    t    y    u    i    o    p
+    caps a    s    d    f    g    h    j    k    l    ;
+         z    x    c    v    b    n    m    ,    .    /
+                   lmet           spc            rmet
+)
+
+(defvar
+  tap-timeout       70
+  hold-timeout      180
+  chord-timeout     70
+  tap-dance-timeout 160
+  caps-word-timeout 2000
+)
+
+(defchords chords $chord-timeout
+  (f  ) f
+  (  j) j
+  (f j) esc
+)
+
+;; qwerty specific aliases
+(defalias
+  ;; chords
+  c_f (chord chords f)
+  c_j (chord chords j)
+
+  ;; forks
+  ;; types ä when ralt + a is pressed and Ä when ralt + rsft + a is pressed
+  ae (fork a RA-q (ralt))
+  oe (fork o RA-p (lalt))
+  ue (fork u RA-y (lalt))
+
+  ;; home row mods
+  a  (tap-hold $tap-timeout $hold-timeout @ae lctl)
+  s  (tap-hold $tap-timeout $hold-timeout s lalt)
+  d  (tap-hold $tap-timeout $hold-timeout d lmet)
+  f  (tap-hold $tap-timeout $hold-timeout @c_f lsft)
+  j  (tap-hold $tap-timeout $hold-timeout @c_j rsft)
+  k  (tap-hold $tap-timeout $hold-timeout k rmet)
+  l  (tap-hold $tap-timeout $hold-timeout l ralt)
+  ;  (tap-hold $tap-timeout $hold-timeout ; rctl)
+
+  ;; layer switch
+  l1 (tap-hold $tap-timeout $hold-timeout spc (layer-while-held layer1))
+  l2 (tap-hold $tap-timeout $hold-timeout bspc (layer-while-held layer2))
+
+  ;; keys + meta
+  c (tap-hold $tap-timeout $hold-timeout c M-c)
+  v (tap-hold $tap-timeout $hold-timeout v M-v)
+  x (tap-hold $tap-timeout $hold-timeout x M-x)
+
+  ;; caps word
+  cw (caps-word $caps-word-timeout)
+)
+
+(deflayer qwerty
+         brdn brup _    _    _    _    prev pp   next mute vold volu
+         q    w    e    r    t    y    @ue  i    @oe  p
+    @cw  @a   @s   @d   @f   g    h    @j   @k   @l   @;
+         z    @x   @c   @v   b    n    m    ,    .    /
+                   @l2            @l1            ret
+)
+
+
+;; layer1 specific aliases
+(defalias
+  ;; brackets with home row mods
+  rbo (tap-hold $tap-timeout $hold-timeout S-9 lsft)
+  {   (tap-hold $tap-timeout $hold-timeout S-[ rmet)
+  [   (tap-hold $tap-timeout $hold-timeout [ lalt)
+  -   (tap-hold $tap-timeout $hold-timeout min rctl)
+
+  ;; brackets
+  rbc S-0
+  }   S-]
+  ]   ]
+
+  ;; other symbols
+  $  S-4
+  %  S-5
+  &  S-7
+  _  S-min
+  =  =
+  ?  S-/
+  at S-2
+  |  S-\
+  #  S-3
+  !  S-1
+  ~  S-`
+  ^ S-6
+)
+
+(deflayer layer1
+         _    _    _    _    _    _    _    _    _    _    _    _
+         @?   @&   @$   @%   @~   _    @_   @!   @#   _
+    _    @^   @[   @{   @rbo @=   left down up   rght @-
+         @|   @]   @}   @rbc @at  _    _    _    _    _
+                   _              _              _
+)
+
+;; layer2 specific aliases
+(defalias
+  ;; math symbols with home row mods
+  m_+  (tap-hold $tap-timeout $hold-timeout S-= lsft)
+  a_/  (tap-hold $tap-timeout $hold-timeout /   lmet)
+  c_*  (tap-hold $tap-timeout $hold-timeout S-8 lalt)
+  s_-  (tap-hold $tap-timeout $hold-timeout min lctl)
+
+  ;; numbers + meta
+  1 (tap-hold $tap-timeout $hold-timeout 1 M-1)
+  2 (tap-hold $tap-timeout $hold-timeout 2 M-2)
+  3 (tap-hold $tap-timeout $hold-timeout 3 M-3)
+  4 (tap-hold $tap-timeout $hold-timeout 4 M-4)
+  5 (tap-hold $tap-timeout $hold-timeout 5 M-5)
+  6 (tap-hold $tap-timeout $hold-timeout 6 M-6)
+  7 (tap-hold $tap-timeout $hold-timeout 7 M-7)
+  8 (tap-hold $tap-timeout $hold-timeout 8 M-8)
+  9 (tap-hold $tap-timeout $hold-timeout 9 M-9)
+)
+
+(deflayer layer2
+         _    _    _    _    _    _    _    _    _    _    _    _
+         _    _    _    lrld _    _    @4   @5   @6   _
+    _    @s_- @c_* @a_/ @m_+ @=   0    @1   @2   @3   .
+         _    _    _    _    _    _    @7   @8   @9   ,
+                   _              _              _
+)
+
+#|---------------------------------------------------------
+(deflayer blank
+         _    _    _    _    _    _    _    _    _    _    _    _
+         _    _    _    _    _    _    _    _    _    _    _
+    _    _    _    _    _    _    _    _    _    _    _    _
+         _    _    _    _    _    _    _    _    _    _
+                   _              _              _
+)
+---------------------------------------------------------|#
