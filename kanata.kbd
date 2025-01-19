@@ -51,8 +51,9 @@
   ;  (tap-hold $tap-timeout $hold-timeout ; rctl)
 
   ;; layer switch
-  l1 (tap-hold $tap-timeout $hold-timeout spc (layer-while-held layer1))
-  l2 (tap-hold $tap-timeout $hold-timeout bspc (layer-while-held layer2))
+  l1s (tap-hold $tap-timeout $hold-timeout spc (layer-while-held layer1))
+  l2b (tap-hold $tap-timeout $hold-timeout bspc (layer-while-held layer2))
+  l2r (tap-hold $tap-timeout $hold-timeout ret (layer-while-held layer2))
 
   ;; keys + meta
   c (tap-hold $tap-timeout $hold-timeout c M-c)
@@ -68,7 +69,7 @@
          q    w    e    r    t    y    @ue  i    @oe  p
     @cw  @a   @s   @d   @f   g    h    @j   @k   @l   @;
          z    @x   @c   @v   b    n    m    ,    .    /
-                   @l2            @l1            ret
+                   @l2b           @l1s           @l2r
 )
 
 
